@@ -1,30 +1,32 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import useDebounce from "./hooks/use-debounce";
-
-const DATA = ['bike', 'dog', 'coin', 'cat', 'shop', 'turtle'];
+import useFetch from "./hooks/use-fetch";
 
 function App() {
-  const [result, setResults] = useState([]);
   const [text, setText] = useState("");
 
   const deb = useDebounce(text, 500);
+  const url = `http://swapi.dev/api/people?search=${deb}`;
+  const {data, isLoading, error} = useFetch(url);
 
-  useEffect(() => {
-    const d = DATA.filter(el => el.toLowerCase().includes(deb));
-    setResults(d);
-  }, [deb]);
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error Occurred!</div>
+  }
 
   return (
     <div className="App">
       <input
         type="text"
         value={text}
-        onChange={e => setText(e.target.value)}
-      />
+        onChange={e => setText(e.target.value)}/>
       {
-        result.length > 0 ?
-          result.map((el, i) => <div key={i}>{el}</div>) : <div>No result</div>
+        data.length > 0 ?
+          data.map((el, i) => <div key={i}>{el.name}</div>) : <div>No result</div>
       }
     </div>
   );
