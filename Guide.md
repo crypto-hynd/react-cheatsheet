@@ -14,3 +14,9 @@ This tutorial will explore 3 types of examples.
 * input
 * alert
 * card
+
+# Introduction useRef Forwad
+This is a continuation of the post: useRef Hook
+Please check it out before continuing
+Forward refs enable parent components to
+pass down refs to their children
